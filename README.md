@@ -8,19 +8,33 @@ repository. The site contains no credentials or Python execution service.
 
 ## Scope
 
-The default experiment replays three real Franka Panda URDF models, with seven
-arm joints per robot and two native hand finger joints. The tools are a sphere,
-a Panda hand and a pressure-limited suction seal. Three object keyframes are
-connected by an IK-prescribed, fixed-orientation path with optimized forces and
-joint torques. The object moves freely under MuJoCo dynamics. This baseline does
-not perform learned-network inference, full Panda CITO, or continuous collision
-certification. The separate Cartesian experiment demonstrates restricted CITO.
+The default recording is a **30-second tabletop and leg assembly**, with three
+real 7-DoF Panda arms, **two native grippers and one spherical support tool**.
+The tabletop's underside faces upward. One gripper and the sphere lift and
+reorient it by 12°; the other gripper carries a leg, aligns its peg with the empty
+socket, inserts it, opens and retracts. Both parts move freely under MuJoCo
+contact dynamics. There are no welds or artificial holding forces.
+
+Eight keyframes cover preparation (0/2 s), lift (6 s), reorientation (12 s),
+approach (18 s), alignment (22 s), insertion (27 s), and final hold (30 s).
+Leg-hand release starts at 28 s. The default measured run passed tracking,
+grip retention, wrench envelopes, sampled collision, insertion and release
+checks. Final insertion depth was 25.00 mm and lateral error was 0.134 mm.
+
+The path uses prescribed SE(3) IK and a contact-mode schedule; IPOPT allocates
+inertial wrenches and joint torques. Pad friction and capability bounds are
+research assumptions. This does not certify full CITO, continuous collision
+safety, hardware performance, fastening or structural strength. Previous
+transport, point/gripper/suction and Cartesian CITO recordings remain available
+in the library.
 
 The viewer supports playback, keyframe navigation, visual/collision meshes,
 measured tool states, torque utilization and JSON downloads. Inputs can be
 inspected and edited; new CasADi/IPOPT or MuJoCo computations require the separate
 Python backend and are disabled on this static site. The stored reports describe
-the actual recorded runs, not the edited inputs.
+the actual recorded runs, not the edited inputs. The private Python backend
+implements this new scenario, duration retiming, async jobs, progress and
+cancellation; it is not a service hosted by GitHub Pages.
 
 ## Models and licenses
 

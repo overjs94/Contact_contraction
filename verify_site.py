@@ -31,4 +31,10 @@ record=json.loads((root/'data/three_franka.json').read_text())
 assert len(record['instances'])==3 and record['dof']==23
 assert record['report']['tracking_passed'] and record['report']['force_envelopes_passed']
 assert record['report']['seal_retained_before_vent']
+assembly=json.loads((root/'data/table_assembly.json').read_text())
+assert assembly['dof']==25 and len(assembly['instances'])==5
+assert len(assembly['keyframes'])==8 and assembly['times'][-1]==30
+assert assembly['report']['execution_passed'] and assembly['report']['leg_released']
+assert assembly['report']['assembly_seated'] and len(assembly['objects'])==2
+assert .020<assembly['report']['insertion_depth_m']<.030
 print(f'Validated {len(meta["files"])} static files and {len(index["models"])} recordings')
