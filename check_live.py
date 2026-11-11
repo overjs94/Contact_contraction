@@ -61,3 +61,18 @@ for spec in panel['instances']:
     manifest=json.loads(get(spec['manifest'])[0])
     assert ET.fromstring(get(urllib.parse.urljoin(spec['manifest'],manifest['urdf']))[0]).tag=='robot'
 print(json.dumps({'primary_task':'single_panel_to_fixed_jig','execution':'passed','source_refinement':'synthetic_input_optimized','all_tools_released':True,'URDF_instances':len(panel['instances'])}))
+mobile=json.loads(get('data/mobile_panel.json')[0]);r=mobile['report']
+assert r['execution_passed'] and r['all_tools_released'] and r['fixture_supported']
+assert 1.35<r['base_travel_m']<1.45 and not r['mobile_base_pose_prescribed']
+assert all(x['provably_outside_fixed_base'] for x in r['workspace_comparison'].values())
+for spec in mobile['instances']:
+    manifest=json.loads(get(spec['manifest'])[0])
+    assert ET.fromstring(get(urllib.parse.urljoin(spec['manifest'],manifest['urdf']))[0]).tag=='robot'
+    if spec['id']=='rby':
+        get(urllib.parse.urljoin(spec['manifest'],manifest['license_file']))
+        get(urllib.parse.urljoin(spec['manifest'],manifest['notice_file']))
+        target=next(x for x in manifest['assets'] if x.endswith('.obj'))
+        with urllib.request.urlopen(target,timeout=30) as response:
+            assert response.status==200 and response.headers.get('Access-Control-Allow-Origin')=='*'
+            assert b'\nv ' in response.read()
+print(json.dumps({'workspace_extension':'RBY1-A_plus_Panda','execution':'passed','measured_base_travel_m':r['base_travel_m'],'fixed_base_unreachable':True,'mobile_base_pose_prescribed':False,'RBY1_mesh_CORS':'passed'}))

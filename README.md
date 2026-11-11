@@ -1,5 +1,26 @@
 # Contact Transfer Lab — public viewer
 
+## Workspace extension: RBY1-A + fixed Panda
+
+[Open the mobile-base experiment](https://overjs94.github.io/Contact_contraction/?model=mobile_panel).
+A fixed Panda supports the initial lift, hands over to the RBY1-A dual arms and
+retreats clear. RBY1 drives 1.4 m along a supplied straight corridor, beyond the
+stationary arms' geometric reach upper bounds, then seats the panel on a jig
+and releases both tools. The default recording is 36 seconds and nine keyframes.
+Both mobile base and panel are free bodies; wheel torques and floor contacts
+drive the base. Their poses are measured, never prescribed during simulation.
+
+Original RBY1-A URDF mass/inertia/joint geometry and upstream DAE/OBJ meshes are
+pinned with Apache-2.0 license and NOTICE. Contact tools are authored gripper
+pads and a spherical support. Passive chassis support uses a low-friction skid
+approximation; resolved caster rolling is not implemented. Wheel effort bounds
+and inner servo gains are declared simulation assumptions, not manufacturer
+ratings. Synthetic contracted source refinement runs before target allocation.
+The corridor, path, torso ready posture, initial grasp and handover modes are
+supplied; no network inference, general mobile planning or hardware result is
+claimed. The Panda-only panel baseline and auxiliary assembly remain available.
+
+
 ## Primary task: single panel to fixed jig
 
 [Open the main panel experiment](https://overjs94.github.io/Contact_contraction/?model=panel_fixture).

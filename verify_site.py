@@ -48,3 +48,11 @@ assert r['source']['source_rho_after']>r['source']['source_rho_before']
 assert not r['network_inference_executed'] and not r['full_geometry_certified']
 assert abs(r['jig_support_final_N']-19.62)<.15
 assert panel['instances'][-1]['role']=='static_jig'
+mobile=json.loads((root/'data/mobile_panel.json').read_text());r=mobile['report']
+assert mobile['dof']==37 and mobile['nq']==51 and len(mobile['instances'])==4
+assert mobile['times'][-1]==36 and len(mobile['keyframes'])==9
+assert r['execution_passed'] and r['fixture_supported'] and r['all_tools_released']
+assert 1.35<r['base_travel_m']<1.45 and abs(r['jig_support_final_N']-19.62)<.15
+assert all(x['provably_outside_fixed_base'] for x in r['workspace_comparison'].values())
+assert not r['mobile_base_pose_prescribed'] and not r['object_pose_prescribed']
+assert (root/'models/rby1_mobile/LICENSE.rby1').exists() and (root/'models/rby1_mobile/NOTICE.rby1').exists()
