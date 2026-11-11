@@ -1,5 +1,30 @@
 # Contact Transfer Lab — public viewer
 
+## Primary task: single panel to fixed jig
+
+[Open the main panel experiment](https://overjs94.github.io/Contact_contraction/?model=panel_fixture).
+The free 2 kg panel is lifted and reoriented by 12°, seated on a fixed jig,
+then all three tools release. Three real Panda URDF instances use one native
+gripper and two spherical supports. The panel and jig also load from URDF.
+The default recording is 30 seconds and eight keyframes. The older tabletop
+and leg assembly remains available as an auxiliary demonstration.
+
+This recording **actually refines quarter-scale synthetic contracted contact
+positions** before geometry-only scaling. Independent source SOCP margin:
+1.053 → 1.116. Target forces and torques are recomputed with target URDF
+mechanics; source forces are never scaled. Final panel position error is
+0.133 mm, the jig carries 19.62 N, and all tools have released. The initial
+grasp, SE(3) path and mode schedule are supplied. This is not network inference,
+a learned-data experiment, full CITO search or a hardware result.
+
+The form exposes source-refinement on/off for a connected local Python
+backend. This free GitHub Pages site replays measured records; it does not run
+Python, IPOPT or MuJoCo on the hosting server. RB5-850E position-servo simulation
+has been verified separately in the private implementation; it is not the
+robot executing this public panel recording. G1 preview does not provide a
+balanced mobile manipulation controller. RBY1 remains an extension path.
+
+
 **Open the viewer: https://overjs94.github.io/Contact_contraction/**
 
 This repository publishes the static research viewer and recorded simulation

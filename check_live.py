@@ -52,3 +52,12 @@ for suffix in ('.dae','.stl'):
         assert not body.startswith(b'version https://git-lfs')
         if suffix=='.dae':assert b'COLLADA' in body
 print(json.dumps({'url':url,'recordings':len(index['models']),'panda_instances':3,'free_parts':2,'assembly':'passed','duration_seconds':30,'static_assets':'passed','upstream_mesh_CORS':'passed'}))
+panel=json.loads(get('data/panel_fixture.json')[0]);r=panel['report']
+assert r['execution_passed'] and r['fixture_supported'] and r['all_tools_released']
+assert r['source']['source_contact_positions_optimized'] and r['source']['synthetic_input']
+assert not r['network_inference_executed'] and r['target_mass_kg']==2
+assert abs(r['jig_support_final_N']-19.62)<.15
+for spec in panel['instances']:
+    manifest=json.loads(get(spec['manifest'])[0])
+    assert ET.fromstring(get(urllib.parse.urljoin(spec['manifest'],manifest['urdf']))[0]).tag=='robot'
+print(json.dumps({'primary_task':'single_panel_to_fixed_jig','execution':'passed','source_refinement':'synthetic_input_optimized','all_tools_released':True,'URDF_instances':len(panel['instances'])}))

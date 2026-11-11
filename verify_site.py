@@ -38,3 +38,13 @@ assert assembly['report']['execution_passed'] and assembly['report']['leg_releas
 assert assembly['report']['assembly_seated'] and len(assembly['objects'])==2
 assert .020<assembly['report']['insertion_depth_m']<.030
 print(f'Validated {len(meta["files"])} static files and {len(index["models"])} recordings')
+panel=json.loads((root/'data/panel_fixture.json').read_text())
+r=panel['report']
+assert panel['dof']==23 and len(panel['instances'])==5 and len(panel['objects'])==1
+assert len(panel['keyframes'])==8 and panel['times'][-1]==30
+assert r['execution_passed'] and r['all_tools_released'] and r['fixture_supported']
+assert r['source']['source_contact_positions_optimized'] and r['source']['synthetic_input']
+assert r['source']['source_rho_after']>r['source']['source_rho_before']
+assert not r['network_inference_executed'] and not r['full_geometry_certified']
+assert abs(r['jig_support_final_N']-19.62)<.15
+assert panel['instances'][-1]['role']=='static_jig'
