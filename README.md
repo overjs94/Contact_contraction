@@ -1,5 +1,7 @@
 # Contact Transfer Lab — public viewer
 
+**Open the viewer: https://overjs94.github.io/Contact_contraction/**
+
 This repository publishes the static research viewer and recorded simulation
 examples. The optimization and physics backend source remains in a private
 repository. The site contains no credentials or Python execution service.
@@ -38,3 +40,6 @@ GitHub Actions** and rerun the workflow. Repository visibility is public.
 
 `site/recording-provenance.json` records the private source revision and hashes
 of the exported static files. It does not contain private optimizer source.
+
+After publishing, `check_live.py` verifies the deployed HTML/JS/CSS, project-path
+recordings, Panda URDFs and public upstream DAE/STL access with browser CORS.
