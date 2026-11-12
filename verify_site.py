@@ -80,3 +80,18 @@ for id in ['free_box_lid','free_folding_object','free_portable_drawer']:
 force=json.loads((root/'data/free_box_push.json').read_text())
 assert force['external_disturbances'][0]['force_world_N']==[0,5,0]
 assert any(e['time']==8.5 and '화살표' in e['id'] for e in force['events'])
+
+clamp=json.loads((root/'data/robotiq_2f85.json').read_text());r=clamp['report']
+assert len(clamp['instances'])==2 and clamp['dof']==8 and r['passed']
+assert r['native_internal_equalities']==3 and not r['object_pose_prescribed']
+assert all(38<v<42 for v in r['mean_jaw_force_N'])
+assert r['maximum_motor_force_Nm']<=5+1e-9 and not r['full_paper_pipeline_executed']
+lift=json.loads((root/'data/panda_robotiq_lift.json').read_text());r=lift['report']
+assert lift['dof']==29 and lift['nq']==36 and len(lift['instances'])==4
+assert r['execution_passed'] and r['independent_plan']['passed']
+assert r['sampled_interface_wrench_capability']['passed']
+assert r['object_equality_constraints_used']==0 and r['internal_gripper_equalities']==3
+assert r['reference_interpolation']=='holding_grasp' and not r['full_paper_pipeline_executed']
+assert r['maximum_position_error_m']<.0003
+assert min(r['maintained_contact_fraction'].values())>.9998
+assert (root/'models/panda_robotiq_lift_edge_gripper/LICENSE.robotiq').exists()

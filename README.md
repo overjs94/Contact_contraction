@@ -9,14 +9,42 @@ The library is organized by experimental purpose:
   records; full manuscript Sec. III-B–IV validation is still in progress.
 - **단일 embodiment (8):** seven robot-arm tracking recordings and the G1
   kinematic preview. These are separate from cooperative manipulation tasks.
-- **요소·강건성 (10):** external-force trials, contact-tool/restricted-CITO
-  tests, and single-arm world-fixed hinge/rail component tests.
+- **요소·강건성 (12):** external-force trials, contact-tool/restricted-CITO
+  tests, single-arm world-fixed hinge/rail components, and the Robotiq tests.
 
 Each scene displays its purpose and validation scope. Selecting a task updates
 its experiment editor; individual embodiment previews hide that editor.
 Direct `?model=...` links open the corresponding category. The default is the
 free three-arm box/lid baseline. Static Pages replays records; it does not run
 the private Python optimizer or simulator.
+
+## Robotiq 2F-85: native gripper and three-arm lift
+
+[Three-arm panel lift](https://overjs94.github.io/Contact_contraction/?model=panda_robotiq_lift)
+uses one Panda with a native Robotiq 2F-85 and two Panda spherical supports.
+The complete linkage and measured passive-joint poses are rendered from the
+pinned original STL assets. Source refinement, robust target realization and
+the first fixed-assignment CITO interval precede free-panel MuJoCo execution.
+The configuration update uses an explicit midpoint variant. This is the first
+lift only, not a completed full-paper sequence or III-D assignment search.
+
+Maximum panel tracking error is 0.216 mm. Maximum measured jaw reactions are
+38.914 / 42.474 N under a declared 60 N per-jaw simulation bound; all three
+contact retention fractions exceed 99.98%. All 147 sampled raw resultants per
+interface pass the declared grasp/contact capabilities. Arms use pose/joint
+impedance and planned force feedforward; the gripper uses measured jaw-force
+admittance over its finite position servo. Internal gripper constraints are
+preserved, with no object weld or prescribed object pose.
+
+[The separate gripper component test](https://overjs94.github.io/Contact_contraction/?model=robotiq_2f85)
+holds a free block with approximately 40 N per jaw using the native four-bar
+mechanism and original ±5 Nm tendon actuator. The mounted scene splits that
+servo into two bounded PD halves with common commands and the native driver
+coupling; exact equivalence under soft coupling is not claimed. Manufacturer
+85 mm stroke / 20–235 N grip-force figures are references, not the simulation's
+net Cartesian wrench bounds or a hardware calibration. Virtual admittance uses
+passive midpoint integration; full multibody contact PMI is not implemented.
+Robotiq assets retain their BSD-2-Clause license alongside Panda Apache-2.0.
 
 ## Workspace extension: RBY1-A + fixed Panda
 

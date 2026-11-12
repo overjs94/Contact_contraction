@@ -96,3 +96,15 @@ for id in ['free_box_lid','free_folding_object','free_portable_drawer','free_box
     for spec in d['instances']:
         m=json.loads(get(spec['manifest'])[0]);assert ET.fromstring(get(urllib.parse.urljoin(spec['manifest'],m['urdf']))[0]).tag=='robot'
 print(json.dumps({'free_articulated_multi_arm_baselines':3,'force_arrow_recording':True,'full_paper_pipeline_claimed':False}))
+
+clamp=json.loads(get('data/robotiq_2f85.json')[0]);assert clamp['report']['passed']
+lift=json.loads(get('data/panda_robotiq_lift.json')[0]);r=lift['report']
+assert r['execution_passed'] and r['independent_plan']['passed'] and not r['full_paper_pipeline_executed']
+assert r['gripper_model']=='robotiq_2f85' and len(lift['instances'])==4
+manifest=json.loads(get('models/robotiq_2f85/model.json')[0])
+get('models/robotiq_2f85/'+manifest['license_file'])
+target=next(a for a in manifest['assets'] if a.endswith('/base.stl'))
+with urllib.request.urlopen(target,timeout=30) as response:
+    assert response.status==200 and response.headers.get('Access-Control-Allow-Origin')=='*'
+    assert len(response.read())>10000
+print(json.dumps({'Robotiq_native_component':'passed','Robotiq_three_arm_first_lift':'passed','full_paper_pipeline':False}))
