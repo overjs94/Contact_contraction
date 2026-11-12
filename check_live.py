@@ -108,3 +108,14 @@ with urllib.request.urlopen(target,timeout=30) as response:
     assert response.status==200 and response.headers.get('Access-Control-Allow-Origin')=='*'
     assert len(response.read())>10000
 print(json.dumps({'Robotiq_native_component':'passed','Robotiq_three_arm_first_lift':'passed','full_paper_pipeline':False}))
+
+for task in ['assembly','box','panel']:
+    model_id='full_'+task
+    if not any(m['id']==model_id for m in index['models']):continue
+    d=json.loads(get('data/'+model_id+'.json')[0]);r=d['report']
+    assert r['execution_passed'] and r['full_variant_pipeline_executed'] and not r['full_paper_pipeline_executed']
+    assert r['sampled_interface_wrench_capability']['passed'] and r['object_equality_constraints_used']==0
+    for spec in d['instances']:
+        manifest=json.loads(get(spec['manifest'])[0]);assert ET.fromstring(get(urllib.parse.urljoin(spec['manifest'],manifest['urdf']))[0]).tag=='robot'
+        get(urllib.parse.urljoin(spec['manifest'],manifest['license_file']))
+    print(json.dumps({'completed_full_task':task,'type_selection':r['selection']['selected_types'],'native_execution':'passed','source_fallback_explicit':True}))

@@ -4,19 +4,43 @@
 
 The library is organized by experimental purpose:
 
-- **논문 목표 (6):** core panel-to-jig task; mobile and free-articulated
-  extensions; auxiliary tabletop/leg assembly. These are baseline execution
-  records; full manuscript Sec. III-B–IV validation is still in progress.
-- **단일 embodiment (8):** seven robot-arm tracking recordings and the G1
+- **논문 목표:** core panel-to-jig task; mobile and free-articulated
+  extensions; auxiliary tabletop/leg assembly. Completed full-task recordings are distinguished from legacy baseline executions; each recording states its validation scope.
+- **단일 embodiment:** seven robot-arm tracking recordings and the G1
   kinematic preview. These are separate from cooperative manipulation tasks.
-- **요소·강건성 (12):** external-force trials, contact-tool/restricted-CITO
+- **요소·강건성:** external-force trials, contact-tool/restricted-CITO
   tests, single-arm world-fixed hinge/rail components, and the Robotiq tests.
 
 Each scene displays its purpose and validation scope. Selecting a task updates
 its experiment editor; individual embodiment previews hide that editor.
-Direct `?model=...` links open the corresponding category. The default is the
-free three-arm box/lid baseline. Static Pages replays records; it does not run
+Direct `?model=...` links open the corresponding category. The default opens the first completed full-task assembly recording. Static Pages replays records; it does not run
 the private Python optimizer or simulator.
+
+## Complete multi-arm furniture assembly
+
+[Open the full assembly](https://overjs94.github.io/Contact_contraction/?model=full_assembly).
+The 30.4 s record includes supplied contracted groups, source refinement/fallback,
+robust target realization, 24 configured P/G and physical-arm assignment
+candidates, all ten keyframes/nine transitions and native closed-loop MuJoCo.
+The accepted G/P/G plan uses the same 25 mm spherical tip and 165 mm EE bias as
+the other new full-task tools. All nine intervals use 16 nodes. Moving-object
+intervals use CITO; stationary load transfer uses conic QPs and released-arm
+retreat uses full joint dynamics. Configuration integration is an explicit
+zero-defect independent midpoint variant, not literal manuscript Eq. (17).
+
+Measured insertion depth is 25.0014 mm and lateral error 0.4535 mm. Maximum
+tracking errors are 0.539/0.667 mm for tabletop/leg; required contact retention
+is 100% for all three arms. Peak jaw reaction is 32.096 N against a tested
+40 N/jaw bound. All 1,641 sampled native interface resultants pass; the released
+leg is supported by 3.92401 N from the tabletop for a 3.924 N weight. No object
+weld, object actuator or prescribed object pose drives execution.
+
+Source common-point refinement uses the manuscript's explicit geometric fallback
+for this two-free-body extension. This record does not demonstrate successful
+source robustness refinement or learned network inference. The current ablation
+table contains only finished trials; panel and free-box full-task records are
+added after their independent acceptance gates pass. Legacy scenes remain
+available under their separate scope labels.
 
 ## Robotiq 2F-85: native gripper and three-arm lift
 

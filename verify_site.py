@@ -95,3 +95,19 @@ assert r['reference_interpolation']=='holding_grasp' and not r['full_paper_pipel
 assert r['maximum_position_error_m']<.0003
 assert min(r['maintained_contact_fraction'].values())>.9998
 assert (root/'models/panda_robotiq_lift_edge_gripper/LICENSE.robotiq').exists()
+
+for task in ['assembly','box','panel']:
+    model_id='full_'+task
+    if not any(m['id']==model_id for m in index['models']):continue
+    d=json.loads((root/'data'/(model_id+'.json')).read_text());r=d['report'];s=r['selection']
+    assert d['full_task_recording'] and d['multi_arm'] and r['execution_passed']
+    assert r['full_variant_pipeline_executed'] and not r['full_paper_pipeline_executed']
+    assert s['selection_executed'] and s['candidate_count']>=12
+    assert s['keyframes']>=5 and s['intervals']==s['keyframes']-1
+    assert r['sampled_interface_wrench_capability']['passed']
+    assert not r['object_pose_prescribed'] and r['object_equality_constraints_used']==0
+    assert d['contact_contraction']['dense_sample_count']==0 and not d['contact_contraction']['network_inference_executed']
+    tool=d['provenance']['canonical_point_tool'];assert tool['radius_m']==.025
+    assert [row[3] for row in tool['ee_to_tip'][:3]]==[0.,0.,.165]
+    if task=='assembly':assert r['task_metrics']['leg_released'] and r['task_metrics']['lateral_error_m']<.002
+print('Validated completed full-task records and explicit scope flags')
