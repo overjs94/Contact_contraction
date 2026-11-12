@@ -32,6 +32,8 @@ candidate counts are 12 for the panel and 24 for box/assembly. Conditional cost
 bounds and numerical/geometry rejections are recorded separately.
 
 All P tools use the same 25 mm spherical-tip URDF and `[0,0,0.165] m` EE bias.
+This is a physical mount length (140 mm stem plus 25 mm sphere radius), not a
+numerical position correction. A minimum-length tool has not been optimized.
 All moving intervals use 16 nodes in the accepted plans. Native physics uses a
 1 ms timestep. Stationary load transfer uses conic QPs and released-arm retreat
 uses full joint dynamics. Panel/box use a contact-coordinate midpoint variant;
@@ -46,6 +48,18 @@ feedback is active. This is not a successful measured-normal-force hybrid arm
 feedback or a hardware calibration claim.
 
 Each task includes six controlled comparisons, for 21 total trials:
+
+The links below the viewer open the seven-condition table and candidate ledger.
+The table gives measured failure reasons and links to each replay. Contact zoom
+pauses at an exact native sample; white dots show force-weighted pad/tool contact
+patch centers, while colored dots show planned anchors. The recorded gaps and
+forces are exported without contact interpolation.
+
+The box base handle previously lacked a 50 mm physical connection to the wall.
+Both visual and collision connectors are now present in `full_box` and all six
+of its comparisons. The unchanged aggregate 2 kg body properties include the
+attachment hardware. Accepted plans were independently revalidated and fresh
+native physics trials executed; this repair is not a new target-NLP solve.
 
 | Variant | Assembly | Box | Panel |
 |---|---|---|---|
@@ -236,7 +250,10 @@ No third-party research dataset assets are redistributed here.
 
 ## Free articulated object: three-arm diagnostic baselines
 
-The current primary scene is [a free box with a lid](https://overjs94.github.io/Contact_contraction/?model=free_box_lid).
+The current primary box scene is [the repaired full box](https://overjs94.github.io/Contact_contraction/?model=full_box).
+The historical [nominal box baseline](https://overjs94.github.io/Contact_contraction/?model=free_box_lid)
+and its old force trial retain an explicit missing-handle-connection warning;
+their original measurements are not results for the repaired geometry.
 Three Panda arms perform base grasp (G), base support (P), and moving-link manipulation (G).
 [The folding panel](https://overjs94.github.io/Contact_contraction/?model=free_folding_object)
 and [portable drawer](https://overjs94.github.io/Contact_contraction/?model=free_portable_drawer)

@@ -124,6 +124,9 @@ for item in index['models']:
     if not item['id'].startswith('full_'):continue
     data=json.loads((root/'data'/(item['id']+'.json')).read_text())
     assert len(data['report']['ablation_results'])==7
+    contacts=data['native_contact_samples']
+    assert contacts['source']=='raw_native_contacts' and not contacts['interpolated']
+    assert contacts['sample_times_s']==data['times'] and len(contacts['frames'])==len(data['times'])
     for instance in data['instances']:
         manifest=json.loads((root/instance['manifest'].removeprefix('./')).read_text())
         if 'point_tool' not in manifest:continue
@@ -134,3 +137,15 @@ summary=json.loads((root/'reports/full-scenario-results.json').read_text())
 assert all(case['full']['execution_passed'] and len(case['variants'])==7 for case in summary['cases'].values())
 assert (root/'reports/full-scenario-flow.svg').is_file()
 print('Validated 21 controlled trials and 29 identical spherical tool mounts')
+box=json.loads((root/'data/full_box.json').read_text())
+spec=next(i for i in box['instances'] if i['id']=='object')
+manifest_path=root/spec['manifest'].removeprefix('./');manifest=json.loads(manifest_path.read_text())
+body=ET.parse(manifest_path.parent/manifest['urdf']).find("link[@name='base']")
+assert body.find("visual[@name='base_handle_connector']") is not None
+assert body.find("collision[@name='base_handle_connector']") is not None
+assert json.loads((root/'data/free_box_lid.json').read_text())['known_modeling_issues']
+assert json.loads((root/'data/free_box_push.json').read_text())['known_modeling_issues']
+for task,case in summary['cases'].items():
+    record=json.loads((root/'data'/('full_'+task+'.json')).read_text())
+    for key,value in case['native_identity'].items():assert record['provenance'][key]==value
+print('Validated measured contact overlays, repaired box geometry, and historical-model warnings')

@@ -113,6 +113,8 @@ for task in ['assembly','box','panel']:
     model_id='full_'+task
     if not any(m['id']==model_id for m in index['models']):continue
     d=json.loads(get('data/'+model_id+'.json')[0]);r=d['report']
+    assert d['native_contact_samples']['sample_times_s']==d['times']
+    assert not d['native_contact_samples']['interpolated'] and len(r['ablation_results'])==7
     assert r['execution_passed'] and r['full_variant_pipeline_executed'] and not r['full_paper_pipeline_executed']
     assert r['sampled_interface_wrench_capability']['passed'] and r['object_equality_constraints_used']==0
     for spec in d['instances']:
@@ -124,3 +126,10 @@ summary=json.loads(get('reports/full-scenario-results.json')[0])
 assert all(case['full']['execution_passed'] and len(case['variants'])==7 for case in summary['cases'].values())
 assert b'<svg' in get('reports/full-scenario-flow.svg')[0]
 print('Verified live three-task summary and code-structure diagram')
+box=json.loads(get('data/full_box.json')[0]);spec=next(i for i in box['instances'] if i['id']=='object')
+m=json.loads(get(spec['manifest'])[0]);body=ET.fromstring(get(urllib.parse.urljoin(spec['manifest'],m['urdf']))[0]).find("link[@name='base']")
+assert body.find("visual[@name='base_handle_connector']") is not None
+assert body.find("collision[@name='base_handle_connector']") is not None
+assert json.loads(get('data/free_box_lid.json')[0])['known_modeling_issues']
+assert json.loads(get('data/free_box_push.json')[0])['known_modeling_issues']
+print('Verified live repaired box, native contact overlays, and historical-model warnings')
