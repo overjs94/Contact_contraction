@@ -87,3 +87,11 @@ for id in ['hinged_door','folding_panel','drawer']:
 for amp,passed in [(2,True),(8,True),(25,False)]:
     d=json.loads(get(f'data/mobile_push_{amp}.json')[0]);assert d['report']['robustness']['all_task_checks_passed']==passed
 print(json.dumps({'passive_articulated_tasks':3,'external_force_trials':3,'capability_failure_preserved_25N':True}))
+
+for id in ['free_box_lid','free_folding_object','free_portable_drawer','free_box_push']:
+    d=json.loads(get('data/'+id+'.json')[0]);r=d['report']
+    assert r['execution_passed'] and r['arm_count']==3 and not r['world_hinge']
+    assert not r['full_paper_pipeline_executed']
+    for spec in d['instances']:
+        m=json.loads(get(spec['manifest'])[0]);assert ET.fromstring(get(urllib.parse.urljoin(spec['manifest'],m['urdf']))[0]).tag=='robot'
+print(json.dumps({'free_articulated_multi_arm_baselines':3,'force_arrow_recording':True,'full_paper_pipeline_claimed':False}))

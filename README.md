@@ -123,3 +123,22 @@ All three recover position; 25 N violates the planned P capability and remains o
 The planned P cone uses mu=0.8 while native tool friction is 0.9; this is not an engine cone violation.
 One deterministic direction/point/time is not a statistical or formal robustness guarantee.
 No third-party research dataset assets are redistributed here.
+
+## Free articulated object: three-arm diagnostic baselines
+
+The current primary scene is [a free box with a lid](https://overjs94.github.io/Contact_contraction/?model=free_box_lid).
+Three Panda arms perform base grasp (G), base support (P), and moving-link manipulation (G).
+[The folding panel](https://overjs94.github.io/Contact_contraction/?model=free_folding_object)
+and [portable drawer](https://overjs94.github.io/Contact_contraction/?model=free_portable_drawer)
+also have a free root and passive internal joint; there is no world-fixed hinge.
+125 synthetic dense source samples retain functional/link IDs, contract to three representative
+grip/contact frames, and transfer to the target. Source group IDs and paths are supplied.
+
+These are **nominal-path diagnostic baselines**, not completed manuscript Sec. III-B–IV
+or hybrid-controller validation records. Each report explicitly sets
+`full_paper_pipeline_executed=false`. The older single-arm fixtures are component tests.
+
+In [the 5 N force trial](https://overjs94.github.io/Contact_contraction/?model=free_box_push),
+click **외력 최대 · 화살표 · 8.5 s** to pause at the peak and see the red force arrow at its
+actual application point. Force magnitude/time and dense/contracted contact display controls
+are included. The previous RBY1 pulse recordings also have a force-peak event.

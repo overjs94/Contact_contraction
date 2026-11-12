@@ -67,3 +67,14 @@ for amp,passed in [(2,True),(8,True),(25,False)]:
     d=json.loads((root/'data'/f'mobile_push_{amp}.json').read_text());r=d['report']['robustness']
     assert r['recovery_passed'] and r['all_task_checks_passed']==passed
     assert d['external_disturbances'][0]['force_world_N']==[0,amp,0]
+
+for id in ['free_box_lid','free_folding_object','free_portable_drawer']:
+    d=json.loads((root/'data'/(id+'.json')).read_text());r=d['report']
+    assert r['execution_passed'] and r['arm_count']==3 and not r['world_hinge']
+    assert r['object_joint_actuators']==0 and r['contact_fraction']==[1.,1.,1.]
+    assert len(d['instances'])==4 and d['instances'][-1]['floating_base']
+    assert d['contact_contraction']['dense_sample_count']==125
+    assert not r['full_paper_pipeline_executed'] and r['planning_mode']=='nominal_path_baseline'
+force=json.loads((root/'data/free_box_push.json').read_text())
+assert force['external_disturbances'][0]['force_world_N']==[0,5,0]
+assert any(e['time']==8.5 and '화살표' in e['id'] for e in force['events'])
