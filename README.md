@@ -1,5 +1,23 @@
 # Contact Transfer Lab — public viewer
 
+**Open: https://overjs94.github.io/Contact_contraction/**
+
+The library is organized by experimental purpose:
+
+- **논문 목표 (6):** core panel-to-jig task; mobile and free-articulated
+  extensions; auxiliary tabletop/leg assembly. These are baseline execution
+  records; full manuscript Sec. III-B–IV validation is still in progress.
+- **단일 embodiment (8):** seven robot-arm tracking recordings and the G1
+  kinematic preview. These are separate from cooperative manipulation tasks.
+- **요소·강건성 (10):** external-force trials, contact-tool/restricted-CITO
+  tests, and single-arm world-fixed hinge/rail component tests.
+
+Each scene displays its purpose and validation scope. Selecting a task updates
+its experiment editor; individual embodiment previews hide that editor.
+Direct `?model=...` links open the corresponding category. The default is the
+free three-arm box/lid baseline. Static Pages replays records; it does not run
+the private Python optimizer or simulator.
+
 ## Workspace extension: RBY1-A + fixed Panda
 
 [Open the mobile-base experiment](https://overjs94.github.io/Contact_contraction/?model=mobile_panel).
@@ -43,7 +61,8 @@ backend. This free GitHub Pages site replays measured records; it does not run
 Python, IPOPT or MuJoCo on the hosting server. RB5-850E position-servo simulation
 has been verified separately in the private implementation; it is not the
 robot executing this public panel recording. G1 preview does not provide a
-balanced mobile manipulation controller. RBY1 remains an extension path.
+balanced mobile manipulation controller. RBY1 mobile cooperation is the implemented
+extension described above.
 
 
 **Open the viewer: https://overjs94.github.io/Contact_contraction/**
@@ -54,7 +73,7 @@ repository. The site contains no credentials or Python execution service.
 
 ## Scope
 
-The default recording is a **30-second tabletop and leg assembly**, with three
+The auxiliary assembly recording is a **30-second tabletop and leg assembly**, with three
 real 7-DoF Panda arms, **two native grippers and one spherical support tool**.
 The tabletop's underside faces upward. One gripper and the sphere lift and
 reorient it by 12°; the other gripper carries a leg, aligns its peg with the empty
@@ -104,7 +123,7 @@ of the exported static files. It does not contain private optimizer source.
 After publishing, `check_live.py` verifies the deployed HTML/JS/CSS, project-path
 recordings, Panda URDFs and public upstream DAE/STL access with browser CORS.
 
-## Passive articulated objects and external forces
+## Single-arm passive-joint component tests and external forces
 
 [Hinged door](https://overjs94.github.io/Contact_contraction/?model=hinged_door),
 [folding panel](https://overjs94.github.io/Contact_contraction/?model=folding_panel) and

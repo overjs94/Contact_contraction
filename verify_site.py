@@ -14,6 +14,8 @@ for name,expected in meta['files'].items():
 assert not list(root.rglob('*.py'))
 assert not (root/'.git').exists()
 assert 'scale-aware-contact-transfer' not in (root/'index.html').read_text()
+for marker in ['id="library-categories"','id="scenario-category"','id="scenario-status"']:
+    assert marker in (root/'index.html').read_text(),marker
 index=json.loads((root/'data/index.json').read_text())
 for model in index['models']:
     data=json.loads((root/'data'/(model['id']+'.json')).read_text())

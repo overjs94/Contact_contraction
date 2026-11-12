@@ -26,6 +26,7 @@ def get(path):
 
 html,_=get('index.html')
 assert b'Contact Transfer' in html and b'./app.js' in html
+assert b'id="library-categories"' in html and b'id="scenario-status"' in html
 app,_=get('app.js');assert len(app)>100000
 css,_=get('style.css');assert b'viewport' in css
 index=json.loads(get('data/index.json')[0])

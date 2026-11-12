@@ -1,6 +1,6 @@
 {
   "content": "static viewer and recorded simulation examples only",
-  "source_commit": "f100c184aff8701f2d5db1cda83007f6f774c5c4",
+  "source_commit": "f8028dd89405d7671addf7512e4c0714af55298f",
   "python_backend_included": false,
   "live_optimization_available": false,
   "files": {
@@ -8,7 +8,7 @@
     "CONTACT-TRANSFER-LICENSE.txt": "19988bdb56d65874276c47b24d5ac4d1498630955d39a4d53c02a692c8ceeb22",
     "THREE-LICENSE.txt": "bfe119ea4fd413f5f7ca3fcd63adb0c4a073ed39daa2fe7d3e6b769e21272601",
     "URDF-LOADER-LICENSE.txt": "12ab00e5637ce70e16be1f6693dfa5f9b7a4fe0f5f976a0329477d0c32d53e86",
-    "app.js": "52e6b10f937ac8fc761e3861c50616edf9ed4a0a4f4a44c11679f89b6879b074",
+    "app.js": "98c0b4a9368a716e6ee380aabfa2b962420991e8e66a64ad26d2e9704bf435cd",
     "data/assembly-preset.json": "842790dd23409449d39279f11a041071bcf43af222e5d226caa0e91a0372cefe",
     "data/drawer-preset.json": "ee9e9e1a0b9691b5a57d0462ef7ae19eae38d2e559ab036f1e97a67168deeb8d",
     "data/drawer.json": "f3f244319757bb8bada3aab0aadccffd574c0fc85a44b233c7dfedffca9f7308",
@@ -26,7 +26,7 @@
     "data/free_portable_drawer.json": "8d2e28bf792aa39d5e4c0221d4b8fc7a56a0e6194c717ede021d66dcc5742794",
     "data/hinged_door-preset.json": "85c5907713c963fe1a43798b2da86ea5fcf89553d12d48ef527384f1cb2d41c5",
     "data/hinged_door.json": "8430ad1ac0f1662c0a3ca9f10dc4129704452336b7035326965f52afd2e57578",
-    "data/index.json": "ac2d917444fc0f79bb54f30e207752149c14dd8107c1dfd2defed4557a740873",
+    "data/index.json": "d6fd11374bbe2d6918a3d664876a9d4057218a9b99c513abccc418458429930d",
     "data/kinova_gen3.json": "f96c0724a574c26780bf05bb3cc07ef20b852da81712add8ecfad5756479b3f1",
     "data/kuka_iiwa7.json": "0cc6e47665f381abf7068a1d16f24fd978a60ef089ef685bc3d84001d8f181ce",
     "data/mobile-preset.json": "3a21ba49b27c083e4713d9d5374793e099b45bfdf0e4bb13fd37ac48880f2359",
@@ -46,7 +46,7 @@
     "data/unitree_g1.json": "824e2807d11f4e450ff467bac5a4b4c267685b5c86b2c08a2c41fb904f4ead17",
     "data/ur5e.json": "60b2e705d1da40b2363eb67abf6557861c8b02bddf6de05376d8875a20fa4a6d",
     "data/xarm7.json": "4a6cad62cadbbfcff218ccfd7ff3206e1cfebb0754704e4637a9cf01205fd12e",
-    "index.html": "d10c5337058857f57f444071120fa37183ae0f25b9c4f3d9f6ffe710d8ce3b48",
+    "index.html": "0f7a440b94d66f43cc0e3d607fb5e27a820333700c1fc9ee560ee27148f6f974",
     "models/articulated_drawer/LICENSE.authored": "19988bdb56d65874276c47b24d5ac4d1498630955d39a4d53c02a692c8ceeb22",
     "models/articulated_drawer/model.json": "5eda747f761ae912f4d8bde74e8b7a9948c0550013a376214aa432f671990613",
     "models/articulated_drawer/robot.urdf": "0306a876d76e0f9fe94161f45286a491da753a2afdaf3c250a5cd5d7cc277531",
@@ -162,6 +162,6 @@
     "models/xarm7/LICENSE.upstream": "685e81e0cd30124e24e834ea2bf39bfead4efc9907d021bc9d1ae0f2dcea1431",
     "models/xarm7/model.json": "892c705b1463095296cc75ba831ae86d38bd0186469c12de3bf7e062984c7a3f",
     "models/xarm7/robot.urdf": "ebbf4c4107674e78e355394921aad3ed4e310f64b6bb39c0b13066382c5a83bf",
-    "style.css": "0008263c1eff694d5d55bb32e200e97446d21402812979d8e438e8287de41ef0"
+    "style.css": "2a4365ece169546f3932d9059dff527917570eabcc344b2d8ae77105ded35246"
   }
 }
