@@ -16,31 +16,67 @@ its experiment editor; individual embodiment previews hide that editor.
 Direct `?model=...` links open the corresponding category. The default opens the first completed full-task assembly recording. Static Pages replays records; it does not run
 the private Python optimizer or simulator.
 
-## Complete multi-arm furniture assembly
+## Three complete multi-arm tasks
 
-[Open the full assembly](https://overjs94.github.io/Contact_contraction/?model=full_assembly).
-The 30.4 s record includes supplied contracted groups, source refinement/fallback,
-robust target realization, 24 configured P/G and physical-arm assignment
-candidates, all ten keyframes/nine transitions and native closed-loop MuJoCo.
-The accepted G/P/G plan uses the same 25 mm spherical tip and 165 mm EE bias as
-the other new full-task tools. All nine intervals use 16 nodes. Moving-object
-intervals use CITO; stationary load transfer uses conic QPs and released-arm
-retreat uses full joint dynamics. Configuration integration is an explicit
-zero-defect independent midpoint variant, not literal manuscript Eq. (17).
+| Record | Selected tools | Keyframes / intervals | Measured full-method result |
+|---|---|---:|---|
+| [Furniture assembly](https://overjs94.github.io/Contact_contraction/?model=full_assembly) | G/P/G | 10 / 9 | 25.001 mm insertion, 0.453 mm lateral error; leg released and supported |
+| [Free box opening](https://overjs94.github.io/Contact_contraction/?model=full_box) | G/P/G | 8 / 7 | passive hinge opens about 60 degrees; 3.294 mm maximum body position error |
+| [Panel to jig](https://overjs94.github.io/Contact_contraction/?model=full_panel) | G/P/P | 9 / 8 | 0.182 mm final error; jig carries 19.62 N; all tools released |
 
-Measured insertion depth is 25.0014 mm and lateral error 0.4535 mm. Maximum
-tracking errors are 0.539/0.667 mm for tabletop/leg; required contact retention
-is 100% for all three arms. Peak jaw reaction is 32.096 N against a tested
-40 N/jaw bound. All 1,641 sampled native interface resultants pass; the released
-leg is supported by 3.92401 N from the tabletop for a 3.924 N weight. No object
-weld, object actuator or prescribed object pose drives execution.
+All three full-method trials pass independent planning and native MuJoCo
+execution gates. The records include supplied contracted groups, source
+refinement/fallback, robust target realization, configured G/P and physical-arm
+assignment search, every transition and measured native URDF poses. Configured
+candidate counts are 12 for the panel and 24 for box/assembly. Conditional cost
+bounds and numerical/geometry rejections are recorded separately.
 
-Source common-point refinement uses the manuscript's explicit geometric fallback
-for this two-free-body extension. This record does not demonstrate successful
-source robustness refinement or learned network inference. The current ablation
-table contains only finished trials; panel and free-box full-task records are
-added after their independent acceptance gates pass. Legacy scenes remain
-available under their separate scope labels.
+All P tools use the same 25 mm spherical-tip URDF and `[0,0,0.165] m` EE bias.
+All moving intervals use 16 nodes in the accepted plans. Native physics uses a
+1 ms timestep. Stationary load transfer uses conic QPs and released-arm retreat
+uses full joint dynamics. Panel/box use a contact-coordinate midpoint variant;
+assembly uses independent midpoint integration. These are explicit numerical
+variants, not literal manuscript Eq. (17), and not whole-body passive midpoint
+integration. Objects are free, with no object actuator, weld or pose forcing.
+
+The 40 N/jaw simulation operating bound is retained. Squeeze targets are
+28/24/18 N for assembly/box/panel; measured maxima are 32.10/35.94/30.03 N.
+Arms use impedance plus planned contact feedforward (`Sf=0`); measured jaw-force
+feedback is active. This is not a successful measured-normal-force hybrid arm
+feedback or a hardware calibration claim.
+
+Each task includes six controlled comparisons, for 21 total trials:
+
+| Variant | Assembly | Box | Panel |
+|---|---|---|---|
+| Full | pass | pass | pass |
+| No source refinement | pass | pass | fail |
+| Fixed types/assignment | pass | pass | pass |
+| Fixed path / force allocation | pass | fail (jaw bound) | pass |
+| No arm force feedforward | fail (tracking) | pass | pass |
+| Robot/object contact disabled | fail | fail | fail |
+| Actual 5 N external push | pass | pass | pass |
+
+Force pulses use the native force API, world +X, one-second sin-squared profile
+and 2.5 Ns impulse. Replay event buttons and arrows show the recorded force.
+P retention is evaluated when the stored planned normal reaction exceeds
+0.1 N; zero-force handoff steps retain their original contact fractions in the
+report. Raw contact flags remain unchanged. Jaw bounds cover the whole trace.
+
+Panel source margin increases from 0.44343 to 0.53207 at its initial posture.
+Common-P source solves for box/assembly use the explicit geometric fallback;
+their source/no-source priors coincide. Fixed types also coincide with the
+selected candidates. These comparisons reuse identical continuous plans and
+execute fresh physical trials; they do not demonstrate a refinement/type-search
+advantage or solver-time improvement. The panel source-off run rejects G/P/P
+numerically at keyframe 4, selects P/P/P, then fails native tracking/contact
+checks. No global physical infeasibility or isolated source-refinement causal
+claim is made. Every variant has one trial; no statistical success rate is claimed.
+
+[Code structure diagram](https://overjs94.github.io/Contact_contraction/reports/full-scenario-flow.svg)
+and [compact validation summary](https://overjs94.github.io/Contact_contraction/reports/full-scenario-results.json).
+Legacy records below remain separately labelled. New full-task recorded replay
+needs no Python server; fresh optimization/execution uses the private Python CLI.
 
 ## Robotiq 2F-85: native gripper and three-arm lift
 
@@ -91,7 +127,7 @@ supplied; no network inference, general mobile planning or hardware result is
 claimed. The Panda-only panel baseline and auxiliary assembly remain available.
 
 
-## Primary task: single panel to fixed jig
+## Legacy panel baseline to fixed jig
 
 [Open the main panel experiment](https://overjs94.github.io/Contact_contraction/?model=panel_fixture).
 The free 2 kg panel is lifted and reoriented by 12°, seated on a fixed jig,
@@ -124,6 +160,9 @@ examples. The optimization and physics backend source remains in a private
 repository. The site contains no credentials or Python execution service.
 
 ## Scope
+
+The following describes the legacy `table_assembly` baseline; the completed
+full optimization records are documented above.
 
 The auxiliary assembly recording is a **30-second tabletop and leg assembly**, with three
 real 7-DoF Panda arms, **two native grippers and one spherical support tool**.

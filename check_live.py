@@ -119,3 +119,8 @@ for task in ['assembly','box','panel']:
         manifest=json.loads(get(spec['manifest'])[0]);assert ET.fromstring(get(urllib.parse.urljoin(spec['manifest'],manifest['urdf']))[0]).tag=='robot'
         get(urllib.parse.urljoin(spec['manifest'],manifest['license_file']))
     print(json.dumps({'completed_full_task':task,'type_selection':r['selection']['selected_types'],'native_execution':'passed','source_fallback_explicit':True}))
+
+summary=json.loads(get('reports/full-scenario-results.json')[0])
+assert all(case['full']['execution_passed'] and len(case['variants'])==7 for case in summary['cases'].values())
+assert b'<svg' in get('reports/full-scenario-flow.svg')[0]
+print('Verified live three-task summary and code-structure diagram')

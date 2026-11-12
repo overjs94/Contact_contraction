@@ -111,3 +111,26 @@ for task in ['assembly','box','panel']:
     assert [row[3] for row in tool['ee_to_tip'][:3]]==[0.,0.,.165]
     if task=='assembly':assert r['task_metrics']['leg_released'] and r['task_metrics']['lateral_error_m']<.002
 print('Validated completed full-task records and explicit scope flags')
+
+required_variants={'full','no_source_refinement','fixed_contact_types','fixed_path','no_arm_force_feedforward','contact_disabled','external_push'}
+point_hashes=set();point_mounts=0
+for task in ['assembly','box','panel']:
+    data=json.loads((root/'data'/('full_'+task+'.json')).read_text())
+    variants=data['report']['ablation_results']
+    assert set(variants)==required_variants and not variants['contact_disabled']['execution_passed']
+    pulse=json.loads((root/'data'/('full_'+task+'_external_push.json')).read_text())['external_disturbances']
+    assert len(pulse)==1 and pulse[0]['force_world_N']==[5.,0.,0.] and pulse[0]['duration']==1.
+for item in index['models']:
+    if not item['id'].startswith('full_'):continue
+    data=json.loads((root/'data'/(item['id']+'.json')).read_text())
+    assert len(data['report']['ablation_results'])==7
+    for instance in data['instances']:
+        manifest=json.loads((root/instance['manifest'].removeprefix('./')).read_text())
+        if 'point_tool' not in manifest:continue
+        tool=manifest['point_tool'];assert tool['radius_m']==.025 and [r[3] for r in tool['ee_to_tip'][:3]]==[0.,0.,.165]
+        point_hashes.add(tool['urdf_sha256']);point_mounts+=1
+assert len(point_hashes)==1 and point_mounts==29
+summary=json.loads((root/'reports/full-scenario-results.json').read_text())
+assert all(case['full']['execution_passed'] and len(case['variants'])==7 for case in summary['cases'].values())
+assert (root/'reports/full-scenario-flow.svg').is_file()
+print('Validated 21 controlled trials and 29 identical spherical tool mounts')
