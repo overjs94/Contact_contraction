@@ -103,3 +103,23 @@ of the exported static files. It does not contain private optimizer source.
 
 After publishing, `check_live.py` verifies the deployed HTML/JS/CSS, project-path
 recordings, Panda URDFs and public upstream DAE/STL access with browser CORS.
+
+## Passive articulated objects and external forces
+
+[Hinged door](https://overjs94.github.io/Contact_contraction/?model=hinged_door),
+[folding panel](https://overjs94.github.io/Contact_contraction/?model=folding_panel) and
+[drawer](https://overjs94.github.io/Contact_contraction/?model=drawer) are measured 14-second,
+five-keyframe MuJoCo recordings. Only the Panda is actuated; each fixture has one passive
+hinge/rail. Contacts and joint paths are supplied. Contact-disabled controls fail all three tasks.
+Joint friction, spring and tool compliance are authored simulation assumptions, not calibrated hardware.
+These extensions do not implement learned articulated contraction or general articulated CITO.
+Studio PBR lighting/shadows and analysis/collision geometry can be selected without changing recorded states.
+
+The same mobile plan/controller is also replayed under prespecified 16–16.5 s world-Y panel pushes:
+[2 N](https://overjs94.github.io/Contact_contraction/?model=mobile_push_2),
+[8 N](https://overjs94.github.io/Contact_contraction/?model=mobile_push_8),
+[25 N](https://overjs94.github.io/Contact_contraction/?model=mobile_push_25).
+All three recover position; 25 N violates the planned P capability and remains overall FAIL.
+The planned P cone uses mu=0.8 while native tool friction is 0.9; this is not an engine cone violation.
+One deterministic direction/point/time is not a statistical or formal robustness guarantee.
+No third-party research dataset assets are redistributed here.

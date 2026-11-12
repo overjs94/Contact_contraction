@@ -76,3 +76,14 @@ for spec in mobile['instances']:
             assert response.status==200 and response.headers.get('Access-Control-Allow-Origin')=='*'
             assert b'\nv ' in response.read()
 print(json.dumps({'workspace_extension':'RBY1-A_plus_Panda','execution':'passed','measured_base_travel_m':r['base_travel_m'],'fixed_base_unreachable':True,'mobile_base_pose_prescribed':False,'RBY1_mesh_CORS':'passed'}))
+
+for id in ['hinged_door','folding_panel','drawer']:
+    d=json.loads(get('data/'+id+'.json')[0]);r=d['report']
+    assert r['execution_passed'] and r['object_joint_actuators']==0 and not r['object_pose_prescribed']
+    for spec in d['instances']:
+        manifest=json.loads(get(spec['manifest'])[0])
+        assert ET.fromstring(get(urllib.parse.urljoin(spec['manifest'],manifest['urdf']))[0]).tag=='robot'
+        get(urllib.parse.urljoin(spec['manifest'],manifest['license_file']))
+for amp,passed in [(2,True),(8,True),(25,False)]:
+    d=json.loads(get(f'data/mobile_push_{amp}.json')[0]);assert d['report']['robustness']['all_task_checks_passed']==passed
+print(json.dumps({'passive_articulated_tasks':3,'external_force_trials':3,'capability_failure_preserved_25N':True}))

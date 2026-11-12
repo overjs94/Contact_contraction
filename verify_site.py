@@ -56,3 +56,14 @@ assert 1.35<r['base_travel_m']<1.45 and abs(r['jig_support_final_N']-19.62)<.15
 assert all(x['provably_outside_fixed_base'] for x in r['workspace_comparison'].values())
 assert not r['mobile_base_pose_prescribed'] and not r['object_pose_prescribed']
 assert (root/'models/rby1_mobile/LICENSE.rby1').exists() and (root/'models/rby1_mobile/NOTICE.rby1').exists()
+
+for id in ['hinged_door','folding_panel','drawer']:
+    d=json.loads((root/'data'/(id+'.json')).read_text());r=d['report']
+    assert r['execution_passed'] and r['object_joint_actuators']==0 and not r['object_pose_prescribed']
+    assert r['contact_fraction']>.95 and not r['unexpected_penetrations_m']
+    assert d['articulated_object'] and len(d['instances'])==2 and len(d['keyframes'])==5
+    assert len(d['q'][0])==d['nq'] and d['times'][-1]==14
+for amp,passed in [(2,True),(8,True),(25,False)]:
+    d=json.loads((root/'data'/f'mobile_push_{amp}.json').read_text());r=d['report']['robustness']
+    assert r['recovery_passed'] and r['all_task_checks_passed']==passed
+    assert d['external_disturbances'][0]['force_world_N']==[0,amp,0]
