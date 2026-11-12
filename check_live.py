@@ -133,3 +133,16 @@ assert body.find("collision[@name='base_handle_connector']") is not None
 assert json.loads(get('data/free_box_lid.json')[0])['known_modeling_issues']
 assert json.loads(get('data/free_box_push.json')[0])['known_modeling_issues']
 print('Verified live repaired box, native contact overlays, and historical-model warnings')
+study=json.loads(get('data/algorithm-comparisons.json')[0]);assert len(study['source_robustness']['trials'])==14
+assert study['source_robustness']['controller_settings_equal']
+for mode,passed in [('polytope',True),('nominal',False)]:
+    d=json.loads(get('data/robust_refinement_'+mode+'_-4N.json')[0])
+    assert d['report']['execution_passed']==passed and d['comparison_recording']
+    assert d['external_disturbances'][0]['force_world_N']==[0.,0.,4.]
+    assert any(event['id']=='과도응답 비교' and event['time']==4.7 for event in d['events'])
+for task,types in [('panel','PPP'),('box','PPG')]:
+    d=json.loads(get('data/counterfactual_'+task+'_'+types+'.json')[0]);assert not d['report']['execution_passed']
+    assert d['report']['selection']['forced_types']==list(types)
+assert b'<svg' in get('data/source-robustness-comparison.svg')[0]
+assert b'<svg' in get('data/type-counterfactual-comparison.svg')[0]
+print('Verified live matched polytope ablation, alternative-type failures, and comparison figures')

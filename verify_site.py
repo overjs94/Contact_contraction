@@ -149,3 +149,36 @@ for task,case in summary['cases'].items():
     record=json.loads((root/'data'/('full_'+task+'.json')).read_text())
     for key,value in case['native_identity'].items():assert record['provenance'][key]==value
 print('Validated measured contact overlays, repaired box geometry, and historical-model warnings')
+study=json.loads((root/'data/algorithm-comparisons.json').read_text())
+trials=study['source_robustness']['trials'];assert len(trials)==14
+assert study['source_robustness']['controller_settings_equal']
+shared_hashes=set(point_hashes);extra_points=0
+for trial in trials:
+    d=json.loads((root/'data'/(trial['recording_id']+'.json')).read_text());r=d['report']
+    assert d['comparison_recording'] and not d['full_task_recording']
+    assert r['execution_passed']==trial['execution_passed'] and not r['object_pose_prescribed']
+    assert r['object_equality_constraints_used']==0 and r['arm_force_selection']==[0.]*6
+    assert r['source']['optimization_vertex_count']==(8 if trial['robustness_enabled'] else 1)
+    assert d['native_contact_samples']['sample_times_s']==d['times']
+for enabled in (True,False):
+    group=[t for t in trials if t['robustness_enabled']==enabled]
+    assert len({(t['native_case_id'],t['native_plan_id']) for t in group})==1
+    assert next(t for t in group if t['force_N']==0)['execution_passed']
+    assert next(t for t in group if t['force_N']==-4)['execution_passed']==enabled
+for task in ('panel','box'):
+    group=study['contact_types'][task];trial=group['counterfactuals'][0]
+    assert trial['new_physical_trial_executed'] and not trial['execution_passed']
+    assert trial['sequence_objective']>group['selected_sequence_objective']
+assert study['contact_types']['assembly']['counterfactuals'][0]['stage']=='planning'
+for item in index['models']:
+    if not item['id'].startswith(('robust_refinement_','counterfactual_')):continue
+    d=json.loads((root/'data'/(item['id']+'.json')).read_text())
+    for spec in d['instances']:
+        m=json.loads((root/spec['manifest'].removeprefix('./')).read_text());tool=m.get('point_tool')
+        if tool:
+            assert tool['radius_m']==.025 and [r[3] for r in tool['ee_to_tip'][:3]]==[0.,0.,.165]
+            shared_hashes.add(tool['urdf_sha256']);extra_points+=1
+assert len(shared_hashes)==1 and extra_points==47
+assert (root/'data/source-robustness-comparison.svg').is_file()
+assert (root/'data/type-counterfactual-comparison.svg').is_file()
+print('Validated 14 matched robustness trials, 3 forced-type comparisons, and 76 shared spherical mounts')

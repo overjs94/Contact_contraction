@@ -47,6 +47,48 @@ Arms use impedance plus planned contact feedforward (`Sf=0`); measured jaw-force
 feedback is active. This is not a successful measured-normal-force hybrid arm
 feedback or a hardware calibration claim.
 
+## Algorithm comparisons: other types and source robustness
+
+Forced alternatives are now planned through the complete sequence, then executed
+with the same physical limits and controller settings:
+
+| Task | Selected → alternative | Sequence objective (smaller is better) | Alternative result |
+|---|---|---|---|
+| Panel | G/P/P → [P/P/P](https://overjs94.github.io/Contact_contraction/?model=counterfactual_panel_PPP) | −64.125 → −30.581 | Plan passed; native execution failed, 86.39 mm maximum position error |
+| Box | G/P/G → [P/P/G](https://overjs94.github.io/Contact_contraction/?model=counterfactual_box_PPG) | −124.697 → −46.340 | Plan passed; native execution failed, 15.95 mm moving-link error |
+| Assembly | G/P/G → G/P/P | no accepted alternative sequence | Planning rejection: one point on the free leg cannot span its required six-dimensional load image |
+
+The viewer also gives independently computed frozen-keyframe margins and torque
+headroom under a common load. Local IK/NLP rejection, cone infeasibility and native
+execution failure are labelled separately.
+
+The matched source refinement experiment uses **three real Panda URDFs with the
+same spherical tips**, a free panel, and no jig/object actuator/weld. Source
+polytope ON uses all eight vertices of a fixed three-axis force box at one declared
+application point. OFF optimizes nominal equilibrium and the same contact geometry
+regularizer. Target contacts are fixed to the transferred positions to isolate
+source refinement; target posture, forces and torques are recomputed.
+
+- [Polytope ON, 4 N upward](https://overjs94.github.io/Contact_contraction/?model=robust_refinement_polytope_-4N): PASS, 1.624 mm / 0.03970 rad maximum errors.
+- [Polytope OFF, same pulse](https://overjs94.github.io/Contact_contraction/?model=robust_refinement_nominal_-4N): FAIL, 15.242 mm / 0.35039 rad and contact loss during the pulse. It recovers after the force ends.
+- Both pass without a disturbance. ON passes both 4 N directions; both fail at
+  8/12 N, which exceed ON's certified static box. Every condition is retained.
+
+There are 14 prespecified trials: two source modes × 0, ±4, ±8, ±12 N, one trial
+per condition. Each mode has the same case/plan ID across forces, and ON/OFF have
+identical controller settings. Common independent source/target margins increase
+from 0.376811 to 0.597848. No source forces are scaled or transferred.
+Click **과도응답 비교 · 4.7 s** to inspect the same time with the actual force arrow.
+
+[Complete comparison ledger](https://overjs94.github.io/Contact_contraction/reports/algorithm-comparison-results.json),
+[force/retention figure](https://overjs94.github.io/Contact_contraction/reports/source-robustness-comparison.svg),
+[type/cost figure](https://overjs94.github.io/Contact_contraction/reports/type-counterfactual-comparison.svg).
+This is a stationary source-refinement diagnostic with a shared geometry
+regularizer, not a full-motion CITO test or a closed-loop stability proof. The
+supplied-contact assumption, source fallback flags, midpoint variants and `Sf=0`
+arm controller limitations remain explicit; literal full-paper verification is
+not claimed.
+
 Each task includes six controlled comparisons, for 21 total trials:
 
 The links below the viewer open the seven-condition table and candidate ledger.
