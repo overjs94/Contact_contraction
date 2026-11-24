@@ -7,6 +7,31 @@ English library groups primary multi-arm tasks, individual embodiment checks,
 and controlled diagnostics. This free static site replays saved native states;
 new optimization and simulation require the Python package.
 
+## Controller allocation — framework 0.2.0a3
+
+[Open the matched-load controller comparison](https://overjs94.github.io/Contact_contraction/?model=research_controller_box_allocation_opposite).
+[Structure, equations, solver roles and evidence](https://github.com/overjs94/scale-aware-contact-transfer/blob/9f42d939c031835cecb5735c0a935d27bb62f29f/docs/controller-allocation-2026-11-24.md).
+
+| Unchanged physical disturbance | Original peak error | Improved peak error |
+|---|---:|---:|
+| Free box · 14.755 N downward | 98.033 mm | 5.041 mm · fixed 24 N preload |
+| Panel · early inside-margin load | 11.870 mm | 1.926 mm |
+| Assembly · early inside-margin load | 9.640 mm | 0.883 mm |
+
+These are fresh native **controller replays of accepted plans**, without new
+source, target, contact-type or CITO optimization. Increasing box preload alone
+to 30 N still fails (95.844 mm). Measured-state disturbance estimation and exact-
+cone online allocation improve tracking with unchanged hardware limits. Native
+jaw limit: 40 N; allocation operating budget: 24 N. Both failed controls remain.
+
+Complete nominal panel, free-box and two-body assembly regressions pass with
+1151/1151, 901/901 and 1420/1420 accepted allocation QPs. After leg release the
+assembly controls the six reachable dynamics directions; passive directions
+and the physical insertion/support checks remain explicit. The final insertion
+depth is 25.001 mm with 0.298 mm lateral error. This does not establish exact
+manuscript post-step execution, learned inference, real-time hardware control
+or CRISP validation. See the recording-specific scope and retained pilot logs.
+
 ## Current framework study — 24 November 2026
 
 | Complete baseline | Tools | Native peak position error |

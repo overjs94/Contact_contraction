@@ -207,3 +207,23 @@ for mode,passed in [('on',True),('off',False)]:
     assert d['external_disturbances'][0]['force_world_N']==[0.,0.,4.]
 assert (root/'data/research-source-margin-response.svg').is_file()
 print('Validated 59 current native trials, declared source extensions, and retained inside-margin counterexamples')
+
+# Controller replays are separate from new source/target/CITO optimization.
+controller=json.loads((root/'data/controller-study-summary.json').read_text())
+assert len(controller['trials'])==9 and not controller['new_NLP_executed']
+box_records=[]
+for mode,passed in [('baseline',False),('preload',False),('allocation',True),('adaptive',True)]:
+    d=json.loads((root/'data'/f'research_controller_box_{mode}_opposite.json').read_text())
+    r=d['report'];assert r['execution_passed']==passed
+    assert not r['controller_replay']['new_NLP_executed'] and not r['full_paper_pipeline_executed']
+    assert all(j['limit_N']==40 for j in r['jaw_force'].values())
+    box_records.append(d)
+for field in ['plan_id','scene_sha256']:
+    assert len({d['provenance'][field] for d in box_records})==1,field
+assert all(d['external_disturbances']==box_records[0]['external_disturbances'] for d in box_records)
+for task in ['panel','box','assembly']:
+    d=json.loads((root/'data'/f'research_controller_{task}_adaptive_full.json').read_text());r=d['report']
+    assert r['execution_passed'] and r['controller_replay']['all_solves_accepted']
+    assert r['object_equality_constraints_used']==0 and not r['full_paper_pipeline_executed']
+assert (root/'data/controller-allocation-response.svg').is_file()
+print('Validated nine controller replays, matched physical loads, retained negative controls and accepted complete-task allocations')
