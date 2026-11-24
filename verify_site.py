@@ -182,3 +182,28 @@ assert len(shared_hashes)==1 and extra_points==47
 assert (root/'data/source-robustness-comparison.svg').is_file()
 assert (root/'data/type-counterfactual-comparison.svg').is_file()
 print('Validated 14 matched robustness trials, 3 forced-type comparisons, and 76 shared spherical mounts')
+
+# Current framework cohort; historical checks above remain unchanged.
+current=json.loads((root/'data/research-study-summary.json').read_text())
+assert current['new_native_trials_counted']==59
+for task in ['panel','box','assembly']:
+    d=json.loads((root/'data'/('research_full_'+task+'.json')).read_text());r=d['report']
+    assert r['execution_passed'] and r['full_framework_pipeline_certified']
+    assert not r['full_paper_pipeline_executed']
+    assert all(s['source_certificate'] for s in r['selection']['source_certificates'])
+    assert len(r['ablation_results'])==6 and d['summary']['physics_dt']==.001
+    if task!='panel':assert d['contact_contraction']['source_model_extension'] and d['contact_contraction']['physical_source_site_count']==19
+    for mode in ['on','off']:
+        loaded=json.loads((root/'data'/f'research_loaded_{task}_{mode}.json').read_text())
+        assert loaded['report']['execution_passed']
+        assert loaded['report']['certified_full_disturbance']['inside_on_reference_certificate']['inside']
+box=json.loads((root/'data/research_probe_box_on_opposite.json').read_text())
+assert not box['report']['execution_passed'] and box['report']['robustness_probe']['inside_on_certificate']['inside']
+paired=json.loads((root/'data/research-source-margin-comparison.json').read_text())
+assert len(paired['trials'])==6
+for mode,passed in [('on',True),('off',False)]:
+    d=json.loads((root/'data'/f'research_source_margin_{mode}_slow_up4.json').read_text())
+    assert d['report']['execution_passed']==passed
+    assert d['external_disturbances'][0]['force_world_N']==[0.,0.,4.]
+assert (root/'data/research-source-margin-response.svg').is_file()
+print('Validated 59 current native trials, declared source extensions, and retained inside-margin counterexamples')

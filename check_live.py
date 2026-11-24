@@ -146,3 +146,15 @@ for task,types in [('panel','PPP'),('box','PPG')]:
 assert b'<svg' in get('data/source-robustness-comparison.svg')[0]
 assert b'<svg' in get('data/type-counterfactual-comparison.svg')[0]
 print('Verified live matched polytope ablation, alternative-type failures, and comparison figures')
+
+current=json.loads(get('data/research-study-summary.json')[0]);assert current['new_native_trials_counted']==59
+for task in ['panel','box','assembly']:
+    d=json.loads(get('data/research_full_'+task+'.json')[0])
+    assert d['report']['execution_passed'] and d['report']['full_framework_pipeline_certified']
+    assert not d['report']['full_paper_pipeline_executed']
+    for mode in ['on','off']:
+        d=json.loads(get(f'data/research_loaded_{task}_{mode}.json')[0]);assert d['report']['execution_passed']
+box=json.loads(get('data/research_probe_box_on_opposite.json')[0])
+assert not box['report']['execution_passed'] and box['report']['robustness_probe']['inside_on_certificate']['inside']
+pair=json.loads(get('data/research-source-margin-comparison.json')[0]);assert len(pair['trials'])==6
+print('Verified live current framework cohort, all 12 full-load runs, and retained failed inside-margin tracking')

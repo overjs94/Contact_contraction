@@ -1,4 +1,76 @@
-# Contact Transfer Lab — public viewer
+# Functional Contact Transfer — public simulations
+
+**Viewer: https://overjs94.github.io/Contact_contraction/**
+
+The current framework study is separate from historical demonstrations. The
+English library groups primary multi-arm tasks, individual embodiment checks,
+and controlled diagnostics. This free static site replays saved native states;
+new optimization and simulation require the Python package.
+
+## Current framework study — 24 November 2026
+
+| Complete baseline | Tools | Native peak position error |
+|---|---|---:|
+| [Panel reorientation, seating and release](https://overjs94.github.io/Contact_contraction/?model=research_full_panel) | G/P/P | 3.965 mm |
+| [Free articulated box opening](https://overjs94.github.io/Contact_contraction/?model=research_full_box) | G/P/G | 1.723 mm |
+| [Tabletop–leg insertion and release](https://overjs94.github.io/Contact_contraction/?model=research_full_assembly) | G/P/G | 1.391 mm |
+
+All three baseline runs pass with certified source refinement, restricted
+hardware selection/planning and native MuJoCo contact execution. Box and
+assembly use **19 explicit physical source P sites in three functional groups**;
+this changes the source contact model and is a declared manuscript extension.
+Original three-P source failures are retained with dual infeasibility evidence.
+Source geometry alone is transferred. Network inference is not executed.
+
+The study contains **59 fresh native trials**, including 18 full/ablation
+conditions, 22 mid-task probes, 12 complete tasks with a mid-task load interval,
+six source-refinement comparisons, and one executed forced-type alternative.
+All 12 inserted-hold full tasks pass in both ON/OFF; this direction does not
+show a target-robustness benefit. The opposite box direction fails tracking
+inside the ON static margin in both modes. Early panel/assembly loading also
+retains failed tracking checks. No closed-loop stability theorem is claimed.
+
+[Current source-margin ON/OFF comparison](https://overjs94.github.io/Contact_contraction/robustness-comparison.html?study=current)
+shows the same 4 N load at 83.6% of the ON static margin: ON maintains support,
+OFF retains a finite-time loss of support. No-load and common 1 N controls both
+pass. This stationary source diagnostic uses matched feedforward/impedance;
+the complete tasks use P normal hybrid feedback, G pose/jaw control and
+projected joint impedance. All failed conditions remain available.
+
+The current P/P/P panel alternative has higher cost (-30.581 versus -64.104)
+and misses the 99% edge-contact threshold (98.952%), while meeting tracking
+and task-goal checks. Local IK/trust-region rejections are distinct from physical
+infeasibility. Forces and moments are drawn on their actual bodies.
+
+## Scope
+
+Supplied contacts, finite operating limits, task phases, fixed assignment and
+restricted candidates are explicit. Moving intervals use contact-coordinate
+midpoint, with stationary conic allocation and release optimization. Exact
+manuscript post-step Panda attempts did not pass within their budgets; this
+is distinct from the passed framework executions. Boxes/assembly and grouped
+source contacts are extensions. CRISP, learned inference, hardware, mobile
+whole-body control and continuous collision completeness are not validated
+by the current three-task cohort. Legacy records retain their original scope.
+
+Source and detailed evidence for coauthors:
+https://github.com/overjs94/scale-aware-contact-transfer/tree/feat/conic-contact-validation
+
+Current numeric summary: [research-study-summary.json](site/data/research-study-summary.json).
+The anonymous review export is a separate identifier-scrubbed artifact and is
+not hosted in this identifying repository.
+
+## Models and licenses
+
+Original framework/viewer code is Apache-2.0. Panda, Robotiq and other upstream
+URDF/mesh notices retain their original terms in each model directory. The
+static export contains recordings and licensed model descriptions; it does not
+bundle the Python backend or external CRISP/SNOPT SDKs. All P tools use the
+same physical 25 mm spherical tip and 165 mm EE-to-contact mount.
+
+The notes below describe earlier cohorts and must be read as historical results.
+
+# Historical viewer notes
 
 **Open: https://overjs94.github.io/Contact_contraction/**
 
@@ -215,7 +287,7 @@ This repository publishes the static research viewer and recorded simulation
 examples. The optimization and physics backend source remains in a private
 repository. The site contains no credentials or Python execution service.
 
-## Scope
+## Historical scope
 
 The following describes the legacy `table_assembly` baseline; the completed
 full optimization records are documented above.
@@ -248,7 +320,7 @@ the actual recorded runs, not the edited inputs. The private Python backend
 implements this new scenario, duration retiming, async jobs, progress and
 cancellation; it is not a service hosted by GitHub Pages.
 
-## Models and licenses
+## Historical model and license notes
 
 URDFs, manifests, upstream licenses and provenance are under `site/models/`.
 Original visual/collision assets load from immutable public upstream commits.
